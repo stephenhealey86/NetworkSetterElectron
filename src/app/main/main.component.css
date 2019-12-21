@@ -1,0 +1,15 @@
+#form-frame {
+    background: rgba(255, 255, 255, 0.6);
+    margin: auto 50px;
+    border-radius: 20px;
+}
+
+form {
+    height: 100%;
+    margin: 15px auto;
+    width: 320px;
+}
+
+div.alert.alert-danger {
+    margin: 5px 0 0 0;
+}

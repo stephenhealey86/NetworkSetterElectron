@@ -1,1 +1,77 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --md-primary-background: #6200EE;
+    --md-primary-dark-background: #3700B3;
+    --md-primary-foreground: #FFFFFF;
+}
+
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    margin: 0;
+}
+
+app-root {
+    height: 100%;
+}
+
+app-main {
+    height: 100%;
+}
+
+#app-background {
+    height: 100%;
+    width: 100%;
+    background-image: url('assets/images/background.jpg');
+    background-size: cover;
+    opacity: 0.75;
+}
+
+ul > li:first-of-type > a {
+    border-top-left-radius: 20px !important;
+}
+
+div.bs-remove-tab {
+    display: initial;
+    border-radius: 50%;
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+div:hover.bs-remove-tab {
+    background: rgba(200, 200, 200, 0.5);
+}
+
+.btn-tab, .btn-tab:focus {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    border-radius: 50%;
+    color: gray;
+    width: 25px;
+    height: 25px;
+    margin: auto 2px;
+}
+
+.btn-tab:hover {
+    background: rgba(200, 200, 200, 0.5);
+}
+
+.tab-content {
+    overflow-y: scroll;
+}
+
+.tab-content::-webkit-scrollbar {
+    display: none;
+}
+
+app-title-bar {
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
