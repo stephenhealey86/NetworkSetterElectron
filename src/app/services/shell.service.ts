@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ElectronService } from 'ngx-electron';
+import { delay } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { ElectronService } from 'ngx-electron';
 export class ShellService {
 
 //#region Variables
-ps: any;
+private ps: any;
+private output: string;
 //#endregion
 
 constructor(private electronService: ElectronService) {
@@ -22,19 +24,36 @@ private isRunningInElectron(): boolean {
   return environment.production;
 }
 
-runCommand(command: string): void {
+async getLastCommandOutput(): Promise<string> {
+  const TIME_OUT_ID = setTimeout(() => { this.output = 'Timeout'; }, 5000);
+  while (this.output === null || this.output === undefined) {
+    // Do nothing
+    await delay(100);
+  }
+  clearTimeout(TIME_OUT_ID);
+  const VALUE_TO_RETURN = this.output;
+  this.output = null;
+  return VALUE_TO_RETURN;
+}
+
+async runCommand(command: string): Promise<string> {
   if (this.isRunningInElectron()) {
     this.ps.addCommand(command);
     this.ps.invoke()
     .then(output => {
-      console.log(output);
+      this.output = output;
+      console.log(output);;
     })
     .catch(err => {
+      this.output = err;
       console.log(err);
     });
   } else {
-    console.log(`In development mode: "${command}" was not executed.`);
+    this.output = `In development mode: "${command}" was not executed.`;
+    console.log(this.output);
   }
+
+  return await this.getLastCommandOutput();
 }
 
 }

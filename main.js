@@ -11,15 +11,6 @@ global.ps = new Shell({
   executionPolicy: 'Bypass',
   noProfile: true
 });
- 
-// ps.addCommand('echo node-powershell');
-// ps.invoke()
-// .then(output => {
-//   console.log(output);
-// })
-// .catch(err => {
-//   console.log(err);
-// });
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -49,7 +40,7 @@ function createWindow () {
   win.loadURL(`file://${__dirname}/dist/index.html`)
 
   // Open the DevTools.
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {

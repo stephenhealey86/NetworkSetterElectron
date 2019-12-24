@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ShellService } from '../services/shell.service';
 import { NetworkSettings } from '../models/network-settings';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-main',
@@ -8,6 +9,9 @@ import { NetworkSettings } from '../models/network-settings';
   styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit, AfterContentInit {
+
+  public hideScreen = false;
+  interfaceAdaptersList: Array<string>;
 
   tabs: Array<NetworkSettings> = [
     {
@@ -31,17 +35,37 @@ export class MainComponent implements OnInit, AfterContentInit {
   constructor(private cmd: ShellService) { }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.getAllAvailableInterfaceAdapters();
-    }, 2000);
     this.tabs[0].active = true;
+    this.getAllAvailableInterfaceAdapters();
+  }
+
+  // Returns true if running in production, Electron is assumed to be true when in production
+  private isRunningInElectron(): boolean {
+    return environment.production;
   }
 
   ngAfterContentInit(): void {
     this.addNewTabButton();
     this.editAlTabHeaders();
     this.lockTabContentHeight();
+    setTimeout(() => {
+      this.hideScreen = true;
+    }, 1000);
   }
+
+  async getAllAvailableInterfaceAdapters(): Promise<void> {
+    if (this.isRunningInElectron()) {
+      const RESULT = await this.cmd.runCommand('Get-NetAdapter -Name "*" -Physical | Format-List -Property "Name"');
+      const ARR = RESULT.split('\n');
+      const ARR_FILTERED = ARR.filter(str => str.length > 7);
+      const ARR_TO_RETURN = ARR_FILTERED.map((arr) => {
+          return arr.substring(7, arr.length - 1);
+        });
+      this.interfaceAdaptersList = ARR_TO_RETURN;
+    } else {
+      this.interfaceAdaptersList = ['Wi-Fi', 'Ethernet'];
+    }
+}
 
   lockTabContentHeight(): void {
     setTimeout(() => {
@@ -68,10 +92,6 @@ export class MainComponent implements OnInit, AfterContentInit {
       span.innerHTML = `<button class="btn-tab"><i class="fas fa-times"></i></button>`;
     });
     }, 20);
-  }
-
-  getAllAvailableInterfaceAdapters(): void {
-      this.cmd.runCommand('netsh interface ipv4 show interfaces');
   }
 
   addNewTab(): void {

@@ -28,6 +28,16 @@ app-main {
     opacity: 0.75;
 }
 
+.hideScreen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-image: url('assets/images/background.jpg');
+    background-size: cover;
+}
+
 ul > li:first-of-type > a {
     border-top-left-radius: 20px !important;
 }
