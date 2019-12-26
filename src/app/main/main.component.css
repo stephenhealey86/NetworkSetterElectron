@@ -13,3 +13,45 @@ form {
 div.alert.alert-danger {
     margin: 5px 0 0 0;
 }
+
+.btn-group, .btn-group > button, .dropdown-menu {
+    width: 100%;
+    text-align: left;
+    color: var(--md-secondary-foreground);
+    font-family: 'Roboto', cursive;
+}
+
+.dropdown-item:hover {
+    background-color: var(--md-primary-background);
+    cursor: pointer;
+    color: var(--md-primary-foreground);
+}
+
+.form-control:focus {
+    border-color: var(--md-primary-background);
+    box-shadow: 0 0 0 0.2rem rgba(98,0,238,.25);
+}
+
+.btn-md-primary {
+    background-color: var(--md-primary-background);
+    color: var(--md-primary-foreground);
+}
+
+.btn-md-primary:hover {
+    position: relative;
+    top: -1px;
+    left: -1px;
+    box-shadow: 1px 1px 5px 1px gray;
+}
+
+.btn-md-secondary {
+    background-color: var(--md-secondary-background);
+    color: var(--md-primary-foreground);
+}
+
+.btn-md-secondary:hover {
+    position: relative;
+    top: -1px;
+    left: -1px;
+    box-shadow: 1px 1px 5px 1px gray;
+}

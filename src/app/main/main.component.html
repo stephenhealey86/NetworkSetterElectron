@@ -3,7 +3,7 @@
       <tabset>
         <tab *ngFor="let tab of tabs; let i = index;"
               [active]="tab.active"
-              (selectTab)="tab.active = true"
+              (selectTab)="tab.active = true; formInterfaceDropDownTouched = false"
               (deselect)="tab.active = false"
               [removable]="true"
               (removed)="removeTabHandler(tab)">
@@ -16,22 +16,26 @@
                   <input (focus)="onNameTextFocus($event)" type="text" class="form-control" #name="ngModel" name="name{{i}}" [(ngModel)]="tab.name" required minlength="3">
                   <div *ngIf="name.invalid && (name.dirty || name.touched)"
                   class="alert alert-danger">
-                  <div *ngIf="name.errors.minlength">
+                  <div *ngIf="name.errors.minlength || name.errors.required">
                     Name must be at least 3 characters long.
                   </div>
                 </div>
                 </div>
                 <div class="form-group mx-5">
                   <label for="name">Interface</label>
-                  <select #interface="ngModel" name="interface{{i}}" [(ngModel)]="tab.interface" class="form-control" required>
-                    <option value="" selected disabled hidden>Select interface</option>
-                    <option  *ngFor="let interface of interfaceAdaptersList">{{interface}}</option>
-                  </select>
-                  <div *ngIf="interface.invalid && (interface.dirty || interface.touched)"
-                  class="alert alert-danger">
-                  <div *ngIf="interface.errors.required">
-                    You must select an interface.
+                  <div class="btn-group" dropdown>
+                    <button id="button-animated" dropdownToggle type="button" (click)="onFormInterfaceDropDownClick()" class="d-flex align-items-center form-control dropdown-toggle"
+                            aria-controls="dropdown-animated">
+                            <span class="flex-grow-1">{{tab.interface.length > 0 ? tab.interface : 'Select interface'}}</span><span class="caret"></span>
+                    </button>
+                    <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu"
+                        role="menu" aria-labelledby="button-animated">
+                      <li (click)="onSelectInterface(interface)" *ngFor="let interface of interfaceAdaptersList" role="menuitem"><span class="dropdown-item">{{interface}}</span></li>
+                    </ul>
                   </div>
+                  <div *ngIf="tab.interface.length === 0 && formInterfaceDropDownTouched"
+                  class="alert alert-danger">
+                    You must select an interface.
                 </div>
                 </div>
                 <div class="form-group mx-5">
@@ -71,8 +75,8 @@
                 </div>
                 </div>
                 <div class="d-flex justify-content-around">
-                    <button class="btn btn-primary" (click)="setStatic()" [disabled]="settingsForm.form.invalid">Static</button>
-                    <button class="btn btn-info" (click)="setDHCP()" [disabled]="interface.invalid">DHCP</button>
+                    <button class="btn btn-md-primary" (click)="setStatic()" [disabled]="settingsForm.form.invalid">Static</button>
+                    <button class="btn btn-md-secondary" (click)="setDHCP()" [disabled]="tab.interface.length === 0">DHCP</button>
                 </div>
             </form>
           </tab>

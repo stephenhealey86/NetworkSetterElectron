@@ -6,7 +6,7 @@ const nativeImage = electron.nativeImage;
 const appIcon = nativeImage.createFromPath(path.join(__dirname, '/src/assets/icon.ico'));
 
 const Shell = require('node-powershell');
- 
+
 global.ps = new Shell({
   executionPolicy: 'Bypass',
   noProfile: true
@@ -28,7 +28,7 @@ function createWindow () {
     icon: appIcon,
     webPreferences: {
       nodeIntegration: true,
-      devTools: true,
+      devTools: false,
       nodeIntegration: true,
       webSecurity: true
     }
@@ -40,7 +40,7 @@ function createWindow () {
   win.loadURL(`file://${__dirname}/dist/index.html`)
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {

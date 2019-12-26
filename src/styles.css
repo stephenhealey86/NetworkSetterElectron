@@ -1,7 +1,10 @@
 :root {
     --md-primary-background: #6200EE;
+    --md-secondary-background: #03DAC6;
     --md-primary-dark-background: #3700B3;
+    --md-secondary-dark-background: #018786;
     --md-primary-foreground: #FFFFFF;
+    --md-secondary-foreground: #495057;
 }
 
 html {
@@ -50,10 +53,6 @@ div.bs-remove-tab {
     height: 30px;
 }
 
-div:hover.bs-remove-tab {
-    background: rgba(200, 200, 200, 0.5);
-}
-
 .btn-tab, .btn-tab:focus {
     background-color: Transparent;
     background-repeat: no-repeat;
@@ -63,8 +62,8 @@ div:hover.bs-remove-tab {
     outline: none;
     border-radius: 50%;
     color: gray;
-    width: 25px;
-    height: 25px;
+    width: 26px;
+    height: 26px;
     margin: auto 2px;
 }
 
@@ -84,4 +83,24 @@ app-title-bar {
     position: absolute;
     width: 100%;
     z-index: 1;
+}
+
+a, input, select {
+    color: var(--md-secondary-foreground);
+    font-family: 'Roboto', cursive;
+}
+
+a.nav-link.active > span {
+    color: var(--md-primary-dark-background);
+    font-family: 'Roboto', cursive;
+}
+
+label, a:hover {
+    color: var(--md-primary-dark-background);
+    font-family: 'Roboto', cursive;
+}
+
+input::selection {
+    background-color: var(--md-primary-background);
+    color: var(--md-primary-foreground);
 }

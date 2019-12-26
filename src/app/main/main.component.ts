@@ -13,6 +13,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   public hideScreen = false;
   interfaceAdaptersList: Array<string>;
+  formInterfaceDropDownTouched = false;
 
   get tabs(): Array<NetworkSettings> {
     return this.settings.networkSettings;
@@ -214,8 +215,17 @@ onNameTextFocus(event: FocusEvent): void {
   const TEXT_INPUT = event.srcElement as HTMLInputElement;
   if (TEXT_INPUT.value === 'Rename Me!') {
     TEXT_INPUT.selectionStart = 0;
-    TEXT_INPUT.selectionEnd = TEXT_INPUT.value.length; 
+    TEXT_INPUT.selectionEnd = TEXT_INPUT.value.length;
   }
+}
+
+onFormInterfaceDropDownClick(): void {
+ this.formInterfaceDropDownTouched = true;
+}
+
+onSelectInterface(selectedInterface: string): void {
+  const TAB = this.tabs.find((tab) => tab.active === true);
+  TAB.interface = selectedInterface;
 }
 
 }

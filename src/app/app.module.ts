@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TitleBarComponent } from './title-bar/title-bar.component';
 import { AppSettingsService } from './Services/app-settings.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
    declarations: [
@@ -22,7 +24,9 @@ import { AppSettingsService } from './Services/app-settings.service';
       BrowserModule,
       AppRoutingModule,
       FormsModule,
-      TooltipModule.forRoot()
+      TooltipModule.forRoot(),
+      BsDropdownModule.forRoot(),
+      BrowserAnimationsModule
    ],
    providers: [
       ElectronService,
