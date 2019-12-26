@@ -2,6 +2,7 @@ import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { ShellService } from '../services/shell.service';
 import { NetworkSettings } from '../models/network-settings';
 import { environment } from 'src/environments/environment';
+import { AppSettingsService } from '../Services/app-settings.service';
 
 @Component({
   selector: 'app-main',
@@ -13,26 +14,15 @@ export class MainComponent implements OnInit, AfterContentInit {
   public hideScreen = false;
   interfaceAdaptersList: Array<string>;
 
-  tabs: Array<NetworkSettings> = [
-    {
-      name: 'Home',
-      interface: 'Wi-Fi',
-      ipAddress: '192.168.1.20',
-      subnet: '255.255.255.0',
-      gateway: '192.168.1.1',
-      active: false
-    },
-    {
-      name: 'Home',
-      interface: 'Wi-Fi',
-      ipAddress: '192.168.1.20',
-      subnet: '255.255.255.0',
-      gateway: '192.168.1.1',
-      active: false
-    }
-  ];
+  get tabs(): Array<NetworkSettings> {
+    return this.settings.networkSettings;
+  }
 
-  constructor(private cmd: ShellService) { }
+  set tabs(value: Array<NetworkSettings>) {
+    this.settings.networkSettings = value;
+  }
+
+  constructor(private cmd: ShellService, private settings: AppSettingsService) { }
 
   ngOnInit() {
     this.tabs[0].active = true;
@@ -130,5 +120,102 @@ export class MainComponent implements OnInit, AfterContentInit {
     // tslint:disable-next-line:max-line-length
     this.cmd.runCommand(`netsh interface ipv4 set address name="${SETTINGS.interface}" dhcp`);
   }
+
+  highlightFirstSectionOfIpAddress(event: FocusEvent): void {
+    const TEXT_INPUT = event.srcElement as HTMLInputElement;
+    TEXT_INPUT.selectionStart = 0;
+    for (let i = 0; i < TEXT_INPUT.value.length; i++) {
+      if (TEXT_INPUT.value[i] === '.') {
+            TEXT_INPUT.selectionEnd = i;
+            break;
+        }
+    }
+  }
+
+  onIpTextChanged(event: KeyboardEvent): void {
+    if (isFinite(parseInt(event.key, 10))) {
+      const TEXT_INPUT = event.srcElement as HTMLInputElement;
+      const CURSOR_START = TEXT_INPUT.selectionStart;
+      const TEXT = TEXT_INPUT.value;
+      // If section is three digits long select next section
+      if (CURSOR_START >= 3 && CURSOR_START < TEXT.length) {
+          if (TEXT[CURSOR_START] === '.' && TEXT[CURSOR_START - 1] !== '.' && TEXT[CURSOR_START - 2]
+              !== '.' && TEXT[CURSOR_START - 3] !== '.') {
+              this.getNextSectionOfIpAddress(TEXT_INPUT);
+          }
+      }
+    }
+  }
+
+  onIpKeyDown(event: KeyboardEvent): void {
+    const TEXT_INPUT = event.srcElement as HTMLInputElement;
+    const CURSOR_START = TEXT_INPUT.selectionStart;
+    const TEXT = TEXT_INPUT.value;
+    const KEY = event.key;
+    if (isFinite(parseInt(event.key, 10))) {
+      if (CURSOR_START === TEXT.length) {
+        /// If at end of ip address stop entry
+        if (TEXT[CURSOR_START - 1] !== '.' && TEXT[CURSOR_START - 2] !== '.' && TEXT[CURSOR_START - 3] !== '.') {
+          event.returnValue = false;
+        }
+      }
+      return;
+    } else if (KEY === '.') {
+        this.getNextSectionOfIpAddress(TEXT_INPUT);
+        event.returnValue = false;
+        return;
+    } else if (KEY === 'Delete' || KEY === 'Backspace') {
+        /// Delete selction if not containing deicmal
+        if (TEXT_INPUT.selectionEnd - CURSOR_START >= 1) {
+          for (let i = CURSOR_START; i < TEXT_INPUT.selectionEnd; i++) {
+            if (TEXT[i] === '.') {
+              event.returnValue = false;
+              break;
+            }
+          }
+          return;
+        }
+        // Delete single if not decimal
+        const BACK_SELECTION = CURSOR_START === 0 ? CURSOR_START : CURSOR_START - 1;
+        if (TEXT[BACK_SELECTION] === '.' && KEY === 'Backspace') {
+          event.returnValue = false;
+        } else if (TEXT.length !== CURSOR_START && TEXT[CURSOR_START] === '.' && KEY === 'Delete') {
+          event.returnValue = false;
+        }
+        return;
+    } else if (KEY === 'ArrowLeft' || KEY === 'ArrowRight') {
+        return;
+    } else if (KEY === 'Tab' || KEY === 'Enter') {
+        return;
+    }
+
+    event.returnValue = false;
+}
+
+  private getNextSectionOfIpAddress(textInput: HTMLInputElement): void {
+    const CURSOR_START = textInput.selectionStart;
+    const TEXT = textInput.value;
+    let firstDecimal = false;
+    for (let i = CURSOR_START; i < TEXT.length; i++) {
+        if (TEXT[i] === '.' && !firstDecimal) {
+          textInput.selectionStart = i + 1;
+          textInput.selectionEnd = TEXT.length;
+          firstDecimal = true;
+          continue;
+        }
+        if (TEXT[i] === '.' && firstDecimal) {
+          textInput.selectionEnd = i;
+          break;
+        }
+    }
+}
+
+onNameTextFocus(event: FocusEvent): void {
+  const TEXT_INPUT = event.srcElement as HTMLInputElement;
+  if (TEXT_INPUT.value === 'Rename Me!') {
+    TEXT_INPUT.selectionStart = 0;
+    TEXT_INPUT.selectionEnd = TEXT_INPUT.value.length; 
+  }
+}
 
 }

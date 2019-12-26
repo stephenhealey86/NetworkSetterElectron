@@ -9,6 +9,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TitleBarComponent } from './title-bar/title-bar.component';
+import { AppSettingsService } from './Services/app-settings.service';
 
 @NgModule({
    declarations: [
@@ -25,7 +26,8 @@ import { TitleBarComponent } from './title-bar/title-bar.component';
    ],
    providers: [
       ElectronService,
-      ShellService
+      ShellService,
+      AppSettingsService
    ],
    bootstrap: [
       AppComponent

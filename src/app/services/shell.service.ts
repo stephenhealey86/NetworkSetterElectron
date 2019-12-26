@@ -42,7 +42,7 @@ async runCommand(command: string): Promise<string> {
     this.ps.invoke()
     .then(output => {
       this.output = output;
-      console.log(output);;
+      console.log(output);
     })
     .catch(err => {
       this.output = err;

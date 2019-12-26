@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { environment } from 'src/environments/environment';
+import { AppSettingsService } from '../Services/app-settings.service';
 
 @Component({
   selector: 'app-title-bar',
@@ -18,7 +19,7 @@ export class TitleBarComponent implements OnInit {
   window = {} as Electron.BrowserWindow;
   //#endregion
 
-  constructor(private electronService: ElectronService) { }
+  constructor(private electronService: ElectronService, private settnigs: AppSettingsService) { }
 
   ngOnInit() {
     if (environment.production) {
@@ -27,15 +28,20 @@ export class TitleBarComponent implements OnInit {
     }
   }
 
+  // Returns true if running in production, Electron is assumed to be true when in production
+  private isRunningInElectron(): boolean {
+    return environment.production;
+  }
+
   // Emits windowIsMaximised value
   emitWindowState(): void {
     this.windowState.emit(this.windowIsMaximised);
   }
 
   closeWindow(): void {
-    if (environment.production) {
-      // Close window after animation
-      setTimeout(() => this.window.close(), 1000);
+    this.settnigs.saveAppSettings();
+    if (this.isRunningInElectron()) {
+      this.window.close();
     } else {
       console.log('Close window.');
     }
