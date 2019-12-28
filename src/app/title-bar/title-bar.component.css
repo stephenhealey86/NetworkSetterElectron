@@ -37,3 +37,7 @@
 .win-btn-grp {
     margin-right: 5px;
 }
+
+.win-btn-grp > button > i {
+    vertical-align: middle;
+}

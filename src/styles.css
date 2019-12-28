@@ -92,7 +92,7 @@ div.bs-remove-tab {
 
 app-title-bar {
     position: absolute;
-    width: 100%;
+    width: 600px;
     z-index: 1;
 }
 
