@@ -8,7 +8,7 @@
               [removable]="true"
               (removed)="removeTabHandler(tab)">
               <ng-template tabHeading>
-              <span tooltip="{{tab.name}}">{{tab.name | slice:0:10}}</span>
+              <span tooltip="{{tab.name}}"[delay]="1000">{{tab.name.length > 10 ? (tab.name | slice:0:7) + '...' : tab.name}}</span>
               </ng-template>
               <form class="d-flex flex-column" #settingsForm="ngForm">
                 <div class="form-group mx-5">
@@ -24,7 +24,7 @@
                 <div class="form-group mx-5">
                   <label for="name">Interface</label>
                   <div class="btn-group" dropdown>
-                    <button id="button-animated" dropdownToggle type="button" (click)="onFormInterfaceDropDownClick()" class="d-flex align-items-center form-control dropdown-toggle"
+                    <button id="button-animated" dropdownToggle type="button" (blur)="onFormInterfaceDropDownClick()" class="d-flex align-items-center form-control dropdown-toggle"
                             aria-controls="dropdown-animated">
                             <span class="flex-grow-1">{{tab.interface.length > 0 ? tab.interface : 'Select interface'}}</span><span class="caret"></span>
                     </button>
@@ -75,8 +75,8 @@
                 </div>
                 </div>
                 <div class="d-flex justify-content-around">
-                    <button class="btn btn-md-primary" (click)="setStatic()" [disabled]="settingsForm.form.invalid">Static</button>
-                    <button class="btn btn-md-secondary" (click)="setDHCP()" [disabled]="tab.interface.length === 0">DHCP</button>
+                    <button class="btn btn-md-primary" (click)="setStatic()" [ngClass]="{'btn-disabled': settingsForm.form.invalid || tab.interface.length === 0}" [disabled]="settingsForm.form.invalid || tab.interface.length === 0">Static</button>
+                    <button class="btn btn-md-secondary" (click)="setDHCP()" [ngClass]="{'btn-disabled': tab.interface.length === 0}" [disabled]="tab.interface.length === 0">DHCP</button>
                 </div>
             </form>
           </tab>

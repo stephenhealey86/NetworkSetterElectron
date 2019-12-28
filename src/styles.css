@@ -64,6 +64,7 @@ div.bs-remove-tab {
 }
 
 .btn-tab, .btn-tab:focus {
+    padding: 0;
     background-color: Transparent;
     background-repeat: no-repeat;
     border: none;
@@ -72,8 +73,8 @@ div.bs-remove-tab {
     outline: none;
     border-radius: 50%;
     color: gray;
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
     margin: auto 2px;
 }
 
@@ -100,6 +101,10 @@ a, input, select {
     font-family: 'Roboto', cursive;
 }
 
+.nav-link {
+    padding: 0.25rem 1rem 0 1rem;
+}
+
 a.nav-link.active > span {
     color: var(--md-primary-dark-background);
     font-family: 'Roboto', cursive;
@@ -108,6 +113,12 @@ a.nav-link.active > span {
 label, a:hover {
     color: var(--md-primary-dark-background);
     font-family: 'Roboto', cursive;
+}
+
+a:not(.active) > span:hover:nth-child(2) {
+    position: relative;
+    left: -1px;
+    top: -1px;
 }
 
 input::selection {

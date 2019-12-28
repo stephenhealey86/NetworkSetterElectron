@@ -1,3 +1,15 @@
+*, .form-control {
+    font-size: 0.75rem;
+}
+
+.form-group {
+    margin-bottom: 0.5rem;
+}
+
+label {
+    margin-bottom: 0.25rem;
+}
+
 #form-frame {
     background: rgba(255, 255, 255, 0.6);
     margin: auto 50px;
@@ -37,7 +49,7 @@ div.alert.alert-danger {
     color: var(--md-primary-foreground);
 }
 
-.btn-md-primary:hover {
+.btn-md-primary:hover.btn-md-primary:not(.btn-disabled) {
     position: relative;
     top: -1px;
     left: -1px;
@@ -49,7 +61,7 @@ div.alert.alert-danger {
     color: var(--md-primary-foreground);
 }
 
-.btn-md-secondary:hover {
+.btn-md-secondary:hover.btn-md-secondary:not(.btn-disabled) {
     position: relative;
     top: -1px;
     left: -1px;

@@ -19,8 +19,8 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 800,
+    width: 600,
+    height: 500,
     resizable: false,
     maximizable: false,
     transparent: false,

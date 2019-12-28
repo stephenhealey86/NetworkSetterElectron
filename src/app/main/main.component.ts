@@ -62,7 +62,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     setTimeout(() => {
       const DIV = document.getElementsByClassName('tab-content')[0] as HTMLDivElement;
       const HEIGHT = DIV.clientHeight;
-      DIV.style.height = `${HEIGHT}px`;
+      DIV.style.height = `${HEIGHT + 3}px`;
     }, 20);
   }
 
