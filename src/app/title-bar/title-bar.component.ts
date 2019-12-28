@@ -49,7 +49,15 @@ export class TitleBarComponent implements OnInit {
 
   // Minimize the window
   minWindow(): void {
-    if (environment.production) {
+    if (this.isRunningInElectron()) {
+      const ELEMENT = document.activeElement as HTMLElement;
+      if (ELEMENT) {
+        console.log(ELEMENT);
+        ELEMENT.classList.add('removeHover');
+        ELEMENT.onmouseleave = () => {
+          ELEMENT.classList.remove('removeHover');
+        };
+      }
       this.window.minimize();
     } else {
       console.log('Minimize window.');

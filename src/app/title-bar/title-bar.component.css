@@ -20,7 +20,7 @@
     outline: none;
 }
 
-.btn-windows:hover {
+.btn-windows:hover.btn-windows:not(.removeHover) {
     color: #AAAAAA;
     position: relative;
     top: -1.5px;
