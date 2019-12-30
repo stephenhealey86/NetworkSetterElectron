@@ -11,9 +11,12 @@
               <span tooltip="{{tab.name}}"[delay]="1000">{{tab.name.length > 10 ? (tab.name | slice:0:7) + '...' : tab.name}}</span>
               </ng-template>
               <form class="d-flex flex-column" #settingsForm="ngForm">
+                <!-- Name -->
                 <div class="form-group mx-5">
-                  <label for="name">Name</label>
-                  <input (focus)="onNameTextFocus($event)" type="text" class="form-control" #name="ngModel" name="name{{i}}" [(ngModel)]="tab.name" required minlength="3">
+                  <span class="form-control">
+                    <label>Name:</label>
+                    <input (focus)="onNameTextFocus($event)" type="text" #name="ngModel" name="name{{i}}" [(ngModel)]="tab.name" required maxlength="20" minlength="3">
+                  </span>
                   <div *ngIf="name.invalid && (name.dirty || name.touched)"
                   class="alert alert-danger">
                   <div *ngIf="name.errors.minlength || name.errors.required">
@@ -21,12 +24,13 @@
                   </div>
                 </div>
                 </div>
+                <!-- Interface -->
                 <div class="form-group mx-5">
-                  <label for="name">Interface</label>
-                  <div class="btn-group" dropdown>
-                    <button id="button-animated" dropdownToggle type="button" (blur)="onFormInterfaceDropDownClick()" class="d-flex align-items-center form-control dropdown-toggle"
+                  <div class="btn-group form-control" dropdown>
+                    <label>Interface:</label>
+                    <button id="button-animated" dropdownToggle type="button" (blur)="onFormInterfaceDropDownClick()" class="dropdown-toggle"
                             aria-controls="dropdown-animated">
-                            <span class="flex-grow-1">{{tab.interface.length > 0 ? tab.interface : 'Select interface'}}</span><span class="caret"></span>
+                            <span class="flex-grow-1">{{tab.interface.length > 0 ? tab.interface + '\t' : 'Select interface\t'}}</span><span class="caret"></span>
                     </button>
                     <ul id="dropdown-animated" *dropdownMenu class="dropdown-menu"
                         role="menu" aria-labelledby="button-animated">
@@ -38,11 +42,14 @@
                     You must select an interface.
                 </div>
                 </div>
+                <!-- IP Address -->
                 <div class="form-group mx-5">
-                  <label for="name">IP Address</label>
-                  <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
-                          class="form-control" #ipAddress="ngModel" name="ipAddress{{i}}" [(ngModel)]="tab.ipAddress" required
-                          pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  <span class="form-control">
+                    <label>IP Address:</label>
+                    <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
+                            #ipAddress="ngModel" name="ipAddress{{i}}" [(ngModel)]="tab.ipAddress" required
+                            pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  </span>
                   <div *ngIf="ipAddress.invalid && (ipAddress.dirty || ipAddress.touched)"
                   class="alert alert-danger">
                   <div *ngIf="ipAddress.errors.pattern">
@@ -50,11 +57,14 @@
                   </div>
                 </div>
                 </div>
+                <!-- Subnet -->
                 <div class="form-group mx-5">
-                  <label for="name">Subnet</label>
-                  <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
-                          class="form-control" #subnet="ngModel" name="subnet{{i}}" [(ngModel)]="tab.subnet" required
-                          pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  <span class="form-control">
+                    <label>Subnet:</label>
+                    <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
+                    #subnet="ngModel" name="subnet{{i}}" [(ngModel)]="tab.subnet" required
+                    pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  </span>
                   <div *ngIf="subnet.invalid && (subnet.dirty || subnet.touched)"
                   class="alert alert-danger">
                   <div *ngIf="subnet.errors.pattern">
@@ -62,11 +72,14 @@
                   </div>
                 </div>
                 </div>
+                <!-- Gateway -->
                 <div class="form-group mx-5">
-                  <label for="name">Gateway</label>
-                  <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
-                          class="form-control" #gateway="ngModel" name="gateway{{i}}" [(ngModel)]="tab.gateway" required
-                          pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  <span class="form-control">
+                    <label>Gateway:</label>
+                    <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
+                            #gateway="ngModel" name="gateway{{i}}" [(ngModel)]="tab.gateway" required
+                            pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  </span>
                   <div *ngIf="gateway.invalid && (gateway.dirty || gateway.touched)"
                   class="alert alert-danger">
                   <div *ngIf="gateway.errors.pattern">
@@ -74,11 +87,14 @@
                   </div>
                 </div>
                 </div>
+                <!-- DNS Primary -->
                 <div class="form-group mx-5">
-                  <label for="name">DNS Primary</label>
-                  <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
-                          class="form-control" #dnsPrimary="ngModel" name="dnsPrimary{{i}}" [(ngModel)]="tab.dnsPrimary" required
-                          pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  <span class="form-control">
+                    <label for="name">DNS Primary:</label>
+                    <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
+                            #dnsPrimary="ngModel" name="dnsPrimary{{i}}" [(ngModel)]="tab.dnsPrimary" required
+                            pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  </span>
                   <div *ngIf="dnsPrimary.invalid && (dnsPrimary.dirty || dnsPrimary.touched)"
                   class="alert alert-danger">
                   <div *ngIf="dnsPrimary.errors.pattern">
@@ -86,11 +102,14 @@
                   </div>
                 </div>
                 </div>
+                <!-- DNS Secondary -->
                 <div class="form-group mx-5">
-                  <label for="name">DNS Secondary</label>
-                  <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
-                          class="form-control" #dnsSecondary="ngModel" name="dnsSecondary{{i}}" [(ngModel)]="tab.dnsSecondary" required
-                          pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  <span class="form-control">
+                    <label for="name">DNS Secondary:</label>
+                    <input (keydown)="onIpKeyDown($event)" (keyup)="onIpTextChanged($event)" (focus)="highlightFirstSectionOfIpAddress($event)" type="text"
+                            #dnsSecondary="ngModel" name="dnsSecondary{{i}}" [(ngModel)]="tab.dnsSecondary" required
+                            pattern="\b(?:(?:2(?:[0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9])\.){3}(?:(?:2([0-4][0-9]|5[0-5])|[0-1]?[0-9]?[0-9]))\b">
+                  </span>
                   <div *ngIf="dnsSecondary.invalid && (dnsSecondary.dirty || dnsSecondary.touched)"
                   class="alert alert-danger">
                   <div *ngIf="dnsSecondary.errors.pattern">
@@ -98,6 +117,7 @@
                   </div>
                 </div>
                 </div>
+                <!-- Buttons -->
                 <div class="d-flex justify-content-around">
                     <button class="btn btn-md-primary" (click)="setStatic()" [ngClass]="{'btn-disabled': settingsForm.form.invalid || tab.interface.length === 0}" [disabled]="settingsForm.form.invalid || tab.interface.length === 0">Static</button>
                     <button class="btn btn-md-secondary" (click)="setDHCP()" [ngClass]="{'btn-disabled': tab.interface.length === 0}" [disabled]="tab.interface.length === 0">DHCP</button>

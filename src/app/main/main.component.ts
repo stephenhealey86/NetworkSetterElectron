@@ -4,6 +4,7 @@ import { NetworkSettings } from '../models/network-settings';
 import { environment } from 'src/environments/environment';
 import { AppSettingsService } from '../Services/app-settings.service';
 import { NotificationService } from '../services/notification.service';
+import { NotificationEnum } from '../models/notificationEnum.enum';
 
 @Component({
   selector: 'app-main',
@@ -63,8 +64,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     setTimeout(() => {
       const DIV = document.getElementsByClassName('tab-content')[0] as HTMLDivElement;
       const HEIGHT = DIV.clientHeight;
-      // DIV.style.height = `${HEIGHT + 5}px`;
-      DIV.style.height = '400px';
+      DIV.style.height = `${HEIGHT + 5}px`;
     }, 20);
   }
 
@@ -128,7 +128,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     } else {
       this.cmd.runCommand(`netsh interface ipv4 set dns name="${SETTINGS.interface}" dhcp`);
     }
-    this.notificationService.setNotification('Static IP settings applied.');
+    this.notificationService.setNotification(NotificationEnum.Info, 'Static IP settings applied.');
   }
 
   setDHCP(): void {
@@ -136,7 +136,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     // tslint:disable-next-line:max-line-length
     this.cmd.runCommand(`netsh interface ipv4 set address name="${SETTINGS.interface}" dhcp`);
     this.cmd.runCommand(`netsh interface ipv4 set dns name="${SETTINGS.interface}" dhcp`);
-    this.notificationService.setNotification('IP address set to automatic.');
+    this.notificationService.setNotification(NotificationEnum.Info, 'IP address set to automatic.');
   }
 
   highlightFirstSectionOfIpAddress(event: FocusEvent): void {

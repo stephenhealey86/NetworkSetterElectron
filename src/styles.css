@@ -129,3 +129,13 @@ input::selection {
     background-color: var(--md-primary-background);
     color: var(--md-primary-foreground);
 }
+
+/* Animations */
+@keyframes Vibrate {
+    25%, 75% {
+        transform: rotate(5deg);
+    }
+    50%, 100% {
+        transform: rotate(-5deg);
+    }
+}
