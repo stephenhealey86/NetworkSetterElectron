@@ -44,11 +44,6 @@ div.alert.alert-danger {
     color: var(--md-primary-foreground);
 }
 
-.btn:focus {
-    box-shadow: none;
-    outline: none;
-}
-
 .btn-md-primary:hover.btn-md-primary:not(.btn-disabled) {
     position: relative;
     top: -1px;

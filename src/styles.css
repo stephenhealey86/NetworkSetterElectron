@@ -82,6 +82,11 @@ div.bs-remove-tab {
     margin: auto 2px;
 }
 
+.btn:focus {
+    box-shadow: none;
+    outline: none;
+}
+
 .btn-tab:hover {
     background: rgba(200, 200, 200, 0.5);
 }
