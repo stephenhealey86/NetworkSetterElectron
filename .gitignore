@@ -44,3 +44,7 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Deployment
+/NetworkSetter-win32-x64
+/windows-store
