@@ -3,6 +3,7 @@ import { ShellService } from '../services/shell.service';
 import { NetworkSettings } from '../models/network-settings';
 import { environment } from 'src/environments/environment';
 import { AppSettingsService } from '../Services/app-settings.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-main',
@@ -23,7 +24,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.settings.networkSettings = value;
   }
 
-  constructor(private cmd: ShellService, private settings: AppSettingsService) { }
+  constructor(private cmd: ShellService, private settings: AppSettingsService, private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.tabs[0].active = true;
@@ -62,7 +63,8 @@ export class MainComponent implements OnInit, AfterContentInit {
     setTimeout(() => {
       const DIV = document.getElementsByClassName('tab-content')[0] as HTMLDivElement;
       const HEIGHT = DIV.clientHeight;
-      DIV.style.height = `${HEIGHT + 5}px`;
+      // DIV.style.height = `${HEIGHT + 5}px`;
+      DIV.style.height = '400px';
     }, 20);
   }
 
@@ -98,6 +100,8 @@ export class MainComponent implements OnInit, AfterContentInit {
       ipAddress: '0.0.0.0',
       subnet: '0.0.0.0',
       gateway: '0.0.0.0',
+      dnsPrimary: '0.0.0.0',
+      dnsSecondary: '0.0.0.0',
       active: true
     });
     this.editAlTabHeaders();
@@ -114,12 +118,25 @@ export class MainComponent implements OnInit, AfterContentInit {
     const SETTINGS = this.tabs.find((tab) => tab.active === true);
     // tslint:disable-next-line:max-line-length
     this.cmd.runCommand(`netsh interface ipv4 set address name="${SETTINGS.interface}" static ${SETTINGS.ipAddress} ${SETTINGS.subnet} ${SETTINGS.gateway}`);
+    if ((SETTINGS.dnsPrimary !== '0.0.0.0') || (SETTINGS.dnsSecondary !== '0.0.0.0')) {
+      if (SETTINGS.dnsPrimary !== '0.0.0.0') {
+        this.cmd.runCommand(`netsh interface ipv4 set dns name="${SETTINGS.interface}" static ${SETTINGS.dnsPrimary} index=1`);
+      }
+      if (SETTINGS.dnsSecondary !== '0.0.0.0') {
+        this.cmd.runCommand(`netsh interface ipv4 set dns name="${SETTINGS.interface}" static ${SETTINGS.dnsSecondary} index=2`);
+      }
+    } else {
+      this.cmd.runCommand(`netsh interface ipv4 set dns name="${SETTINGS.interface}" dhcp`);
+    }
+    this.notificationService.setNotification('Static IP settings applied.');
   }
 
   setDHCP(): void {
     const SETTINGS = this.tabs.find((tab) => tab.active === true);
     // tslint:disable-next-line:max-line-length
     this.cmd.runCommand(`netsh interface ipv4 set address name="${SETTINGS.interface}" dhcp`);
+    this.cmd.runCommand(`netsh interface ipv4 set dns name="${SETTINGS.interface}" dhcp`);
+    this.notificationService.setNotification('IP address set to automatic.');
   }
 
   highlightFirstSectionOfIpAddress(event: FocusEvent): void {

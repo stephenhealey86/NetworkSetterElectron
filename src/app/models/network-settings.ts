@@ -4,5 +4,7 @@ export interface NetworkSettings {
     ipAddress: string;
     subnet: string;
     gateway: string;
+    dnsPrimary: string;
+    dnsSecondary: string;
     active: boolean;
 }

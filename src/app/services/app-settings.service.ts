@@ -49,6 +49,8 @@ private seedSettings(): AppSettingsModel {
       ipAddress: '0.0.0.0',
       subnet: '0.0.0.0',
       gateway: '0.0.0.0',
+      dnsPrimary: '0.0.0.0',
+      dnsSecondary: '0.0.0.0',
       active: true
     }]
   };
