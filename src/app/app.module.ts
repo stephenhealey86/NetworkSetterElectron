@@ -12,12 +12,15 @@ import { TitleBarComponent } from './title-bar/title-bar.component';
 import { AppSettingsService } from './Services/app-settings.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { NotificationBarComponent } from './notification-bar/notification-bar.component';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
    declarations: [
       AppComponent,
       MainComponent,
-      TitleBarComponent
+      TitleBarComponent,
+      NotificationBarComponent
    ],
    imports: [
       TabsModule.forRoot(),
@@ -31,7 +34,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
    providers: [
       ElectronService,
       ShellService,
-      AppSettingsService
+      AppSettingsService,
+      NotificationService
    ],
    bootstrap: [
       AppComponent
