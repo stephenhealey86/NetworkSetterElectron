@@ -1,6 +1,6 @@
-<div class="d-flex justify-content-center" *ngIf="notificationService.notificationMessage">
+<div id="notificationDiv" class="d-flex justify-content-center" *ngIf="notificationService.notificationMessage">
   <span class="d-flex justify-content-between align-items-center">
-    <p>Message - {{notificationService.notificationMessage}}</p>
+    <p>{{notificationService.notificationMessage}}</p>
     <button (click)="notificationService.clearNotification()" class="btn btn-notification">Ok</button>
   </span>
 </div>

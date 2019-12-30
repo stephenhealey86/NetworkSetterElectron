@@ -1,9 +1,9 @@
 div {
-    transform: translateY(-50px);
     animation-name: popUp;
     animation-duration: 2s;
     width: 100%;
-    position: relative;
+    bottom: 50px;
+    position: fixed;
 }
 
 span {
@@ -30,13 +30,14 @@ p {
     top: -1px;
     left: -1px;
     box-shadow: 1px 1px 5px 1px gray;
+    animation: Vibrate 250ms 2;
 }
 
 @keyframes popUp {
     from {
-        transform: translateY(0);
+        transform: translateY(150px);
     }
     to {
-        transform: translateY(-50px);
+        transform: translateY(0);
     }
   }
