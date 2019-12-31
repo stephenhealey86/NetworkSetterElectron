@@ -58,7 +58,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     } else {
       this.interfaceAdaptersList = ['Wi-Fi', 'Ethernet'];
     }
-}
+  }
 
   lockTabContentHeight(): void {
     setTimeout(() => {
@@ -228,21 +228,23 @@ export class MainComponent implements OnInit, AfterContentInit {
     }
 }
 
-onNameTextFocus(event: FocusEvent): void {
-  const TEXT_INPUT = event.srcElement as HTMLInputElement;
-  if (TEXT_INPUT.value === 'Rename Me!') {
-    TEXT_INPUT.selectionStart = 0;
-    TEXT_INPUT.selectionEnd = TEXT_INPUT.value.length;
+  onNameTextFocus(event: FocusEvent): void {
+    const TEXT_INPUT = event.srcElement as HTMLInputElement;
+    if (TEXT_INPUT.value === 'Rename Me!') {
+      TEXT_INPUT.selectionStart = 0;
+      TEXT_INPUT.selectionEnd = TEXT_INPUT.value.length;
+    }
   }
-}
 
-onFormInterfaceDropDownClick(): void {
- this.formInterfaceDropDownTouched = true;
-}
+  onFormInterfaceDropDownClick(): void {
+    setTimeout(() => {
+      this.formInterfaceDropDownTouched = true;
+    }, 250);
+  }
 
-onSelectInterface(selectedInterface: string): void {
-  const TAB = this.tabs.find((tab) => tab.active === true);
-  TAB.interface = selectedInterface;
-}
+  onSelectInterface(selectedInterface: string): void {
+    const TAB = this.tabs.find((tab) => tab.active === true);
+    TAB.interface = selectedInterface;
+  }
 
 }
