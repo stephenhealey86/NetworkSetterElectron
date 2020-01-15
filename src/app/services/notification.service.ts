@@ -17,12 +17,9 @@ constructor() { }
 
 async setNotification(notificationLevel: NotificationEnum, message: string): Promise<void> {
   const NEXT_MESSAGE = `${NotificationEnum[notificationLevel]} - ${message}`;
-  console.log('1');
   if (this.notificationList.indexOf(NEXT_MESSAGE) === -1) {
-    console.log('2');
     this.notificationList.push(NEXT_MESSAGE);
     if (this.notificationMessage) {
-      console.log('3');
       this.clearNotification();
     }
     while (this.notificationList.length > 0) {

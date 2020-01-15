@@ -1,6 +1,6 @@
 <div id="app-background" class="d-flex justify-content-around">
     <div id="form-frame">
-      <tabset>
+      <tabset *ngIf="appPath === null">
         <tab *ngFor="let tab of tabs; let i = index;"
               [active]="tab.active"
               (selectTab)="tab.active = true; formInterfaceDropDownTouched = false"
@@ -125,6 +125,18 @@
             </form>
           </tab>
       </tabset>
+
+      <!-- Not Admin Information -->
+      <div class="m-3" *ngIf="appPath !== null">
+        <p class="m-0">Relaunch app with administrator rights.</p>
+        <p>Or app will not function correctly.</p>
+        <p class="m-0">Location:</p>
+        <p>{{appPath}}</p>
+        <span class="d-flex justify-content-around">
+          <button (click)="closeApp(false)" class="btn btn-warning">Ok</button>
+          <button (click)="closeApp(true)" class="btn btn-info">Close</button>
+        </span>
+      </div>
     </div>
 </div>
 <div class="hideScreen" [hidden]="hideScreen"></div>

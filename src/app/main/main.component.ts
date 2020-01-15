@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { AppSettingsService } from '../Services/app-settings.service';
 import { NotificationService } from '../services/notification.service';
 import { NotificationEnum } from '../models/notificationEnum.enum';
+import { ElectronService } from 'ngx-electron';
 
 @Component({
   selector: 'app-main',
@@ -14,6 +15,7 @@ import { NotificationEnum } from '../models/notificationEnum.enum';
 export class MainComponent implements OnInit, AfterContentInit {
 
   public hideScreen = false;
+  public appPath: string = null;
   interfaceAdaptersList: Array<string>;
   formInterfaceDropDownTouched = false;
 
@@ -25,11 +27,24 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.settings.networkSettings = value;
   }
 
-  constructor(private cmd: ShellService, private settings: AppSettingsService, private notificationService: NotificationService) { }
+  constructor(private cmd: ShellService, private settings: AppSettingsService,
+              private notificationService: NotificationService, private electronService: ElectronService) { }
 
   ngOnInit() {
+    this.checkIfAdmin();
     this.tabs[0].active = true;
     this.getAllAvailableInterfaceAdapters();
+  }
+
+  async checkIfAdmin(): Promise<void> {
+    if (this.isRunningInElectron()) {
+      const value = await this.cmd.checkIfAdmin()
+      if (!value) {
+        this.appPath = `${this.electronService.remote.app.getAppPath()}\\NetworkSetter.exe`;
+      }
+    } else {
+      this.appPath = 'Testing App Path';
+    }
   }
 
   // Returns true if running in production, Electron is assumed to be true when in production
@@ -62,29 +77,41 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   lockTabContentHeight(): void {
     setTimeout(() => {
-      const DIV = document.getElementsByClassName('tab-content')[0] as HTMLDivElement;
-      const HEIGHT = DIV.clientHeight;
-      DIV.style.height = `${HEIGHT + 5}px`;
+      try {
+        const DIV = document.getElementsByClassName('tab-content')[0] as HTMLDivElement;
+        const HEIGHT = DIV.clientHeight;
+        DIV.style.height = `${HEIGHT + 5}px`;
+      } catch (error) {
+        console.log(error);
+      }
     }, 20);
   }
 
   addNewTabButton(): void {
-    const UL_ELEMENT = document.getElementsByTagName('ul')[0];
-    const BTN_ELEMENT = document.createElement('button');
-    BTN_ELEMENT.onclick = () => this.addNewTab();
-    BTN_ELEMENT.classList.add('btn-tab');
-    BTN_ELEMENT.innerHTML = `<i class="fas fa-plus"></i>`;
-    UL_ELEMENT.appendChild(BTN_ELEMENT);
+    try {
+      const UL_ELEMENT = document.getElementsByTagName('ul')[0];
+      const BTN_ELEMENT = document.createElement('button');
+      BTN_ELEMENT.onclick = () => this.addNewTab();
+      BTN_ELEMENT.classList.add('btn-tab');
+      BTN_ELEMENT.innerHTML = `<i class="fas fa-plus"></i>`;
+      UL_ELEMENT.appendChild(BTN_ELEMENT);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   editAlTabHeaders(): void {
     setTimeout(() => {
-      const SPANS = document.getElementsByClassName('bs-remove-tab');
-      const ARR = Array.prototype.slice.call(SPANS) as Array<HTMLSpanElement>;
-      ARR.forEach(span => {
-      span.innerHTML = `<button class="btn-tab"><i class="fas fa-times"></i></button>`;
-    });
-    }, 20);
+        try {
+          const SPANS = document.getElementsByClassName('bs-remove-tab');
+          const ARR = Array.prototype.slice.call(SPANS) as Array<HTMLSpanElement>;
+          ARR.forEach(span => {
+          span.innerHTML = `<button class="btn-tab"><i class="fas fa-times"></i></button>`;
+      });
+        } catch (error) {
+          console.log(error);
+        }
+      }, 20);
   }
 
   addNewTab(): void {
@@ -245,6 +272,20 @@ export class MainComponent implements OnInit, AfterContentInit {
   onSelectInterface(selectedInterface: string): void {
     const TAB = this.tabs.find((tab) => tab.active === true);
     TAB.interface = selectedInterface;
+  }
+
+  closeApp(value: boolean): void {
+    if (value) {
+      if (this.isRunningInElectron()) {
+        this.electronService.remote.app.quit();
+      } else {
+        console.log('Closing app.');
+      }
+    } else {
+      console.log('Not closing app.');
+      this.appPath = null;
+      this.editAlTabHeaders();
+    }
   }
 
 }

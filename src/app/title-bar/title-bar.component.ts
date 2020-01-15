@@ -52,7 +52,6 @@ export class TitleBarComponent implements OnInit {
     if (this.isRunningInElectron()) {
       const ELEMENT = document.activeElement as HTMLElement;
       if (ELEMENT) {
-        console.log(ELEMENT);
         ELEMENT.classList.add('removeHover');
         ELEMENT.onmouseleave = () => {
           ELEMENT.classList.remove('removeHover');

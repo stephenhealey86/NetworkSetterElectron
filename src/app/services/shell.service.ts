@@ -56,4 +56,27 @@ async runCommand(command: string): Promise<string> {
   return await this.getLastCommandOutput();
 }
 
+async checkIfAdmin(): Promise<boolean> {
+  let returnValue = null;
+  if (this.isRunningInElectron()) {
+    this.ps.addCommand('NET SESSION');
+    this.ps.invoke()
+    .then(output => {
+      returnValue = true;
+    })
+    .catch(err => {
+      console.log('Not Admin');
+      returnValue = false;
+    });
+    while (returnValue === null) {
+      // Do nothing
+      await delay(500);
+      console.log(`Return value: ${returnValue}`);
+    }
+    return returnValue;
+  } else {
+    return true;
+  }
+}
+
 }
