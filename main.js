@@ -27,8 +27,7 @@ function createWindow () {
     frame: false,
     icon: appIcon,
     webPreferences: {
-      nodeIntegration: true,
-      devTools: false,
+      devTools: true,
       nodeIntegration: true,
       webSecurity: true
     }
@@ -40,7 +39,7 @@ function createWindow () {
   win.loadURL(`file://${__dirname}/dist/index.html`)
 
   // Open the DevTools.
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {

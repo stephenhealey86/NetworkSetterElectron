@@ -10,8 +10,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build --prod && electron .",
-    "package-app": "electron-packager . NetworkSetter --asar --icon ./src/assets/icon.ico",
-    "package-app-admin": "electron-packager . NetworkSetter --asar --icon ./src/assets/icon.ico --win32metadata.requested-execution-level=\"requireAdministrator\"",
+    "package-app": "ng build --prod && electron-packager . NetworkSetter --asar --icon ./src/assets/icon.ico",
+    "package-app-admin": "ng build --prod && electron-packager . NetworkSetter --asar --icon ./src/assets/icon.ico --win32metadata.requested-execution-level=\"requireAdministrator\"",
     "windows-store": "electron-windows-store --input-directory C:\\Users\\Stephen\\Documents\\Dev\\Electron\\NetworkSetter\\NetworkSetter-win32-x64 --output-directory C:\\Users\\Stephen\\Documents\\Dev\\Electron\\NetworkSetter\\windows-store --windows-kit \"C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit\" --package-version 1.0.0.0 --package-name NetworkSetter --package-display-name \"Network Setter\" --identity-name 17880StephenHealey.4885081BC1390 --publisher CN=461968B2-0EE5-4F10-BBDA-3DFA5CE0B80E --publisher-display-name \"Stephen Healey\" --package-description \"Quick and easy way to set and store network adaptor IP settings.\" --signtool-params /debug -a ./Resources --package-background-color #FFFFFF"
   },
   "private": true,

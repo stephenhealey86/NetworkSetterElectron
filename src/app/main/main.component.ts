@@ -16,8 +16,9 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   public hideScreen = false;
   public appPath: string = null;
-  interfaceAdaptersList: Array<string>;
-  formInterfaceDropDownTouched = false;
+  public interfaceAdaptersList: Array<string>;
+  public formInterfaceDropDownTouched = false;
+  private NEW_TAB_BUTTON: HTMLButtonElement = null;
 
   get tabs(): Array<NetworkSettings> {
     return this.settings.networkSettings;
@@ -30,15 +31,15 @@ export class MainComponent implements OnInit, AfterContentInit {
   constructor(private cmd: ShellService, private settings: AppSettingsService,
               private notificationService: NotificationService, private electronService: ElectronService) { }
 
-  ngOnInit() {
-    this.checkIfAdmin();
+  async ngOnInit() {
+    await this.checkIfAdmin();
     this.tabs[0].active = true;
     this.getAllAvailableInterfaceAdapters();
   }
 
-  async checkIfAdmin(): Promise<void> {
+  private async checkIfAdmin(): Promise<void> {
     if (this.isRunningInElectron()) {
-      const value = await this.cmd.checkIfAdmin()
+      const value = await this.cmd.checkIfAdmin();
       if (!value) {
         this.appPath = `${this.electronService.remote.app.getAppPath()}\\NetworkSetter.exe`;
       }
@@ -53,7 +54,6 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.addNewTabButton();
     this.editAlTabHeaders();
     this.lockTabContentHeight();
     setTimeout(() => {
@@ -61,7 +61,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     }, 1000);
   }
 
-  async getAllAvailableInterfaceAdapters(): Promise<void> {
+  private async getAllAvailableInterfaceAdapters(): Promise<void> {
     if (this.isRunningInElectron()) {
       const RESULT = await this.cmd.runCommand('Get-NetAdapter -Name "*" -Physical | Format-List -Property "Name"');
       const ARR = RESULT.split('\n');
@@ -75,7 +75,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     }
   }
 
-  lockTabContentHeight(): void {
+  private lockTabContentHeight(): void {
     setTimeout(() => {
       try {
         const DIV = document.getElementsByClassName('tab-content')[0] as HTMLDivElement;
@@ -87,26 +87,29 @@ export class MainComponent implements OnInit, AfterContentInit {
     }, 20);
   }
 
-  addNewTabButton(): void {
-    try {
-      const UL_ELEMENT = document.getElementsByTagName('ul')[0];
-      const BTN_ELEMENT = document.createElement('button');
-      BTN_ELEMENT.onclick = () => this.addNewTab();
-      BTN_ELEMENT.classList.add('btn-tab');
-      BTN_ELEMENT.innerHTML = `<i class="fas fa-plus"></i>`;
-      UL_ELEMENT.appendChild(BTN_ELEMENT);
-    } catch (error) {
-      console.log(error);
+  private addNewTabButton(): void {
+    if (this.NEW_TAB_BUTTON === null) {
+      try {
+        const UL_ELEMENT = document.getElementsByTagName('ul')[0];
+        this.NEW_TAB_BUTTON = document.createElement('button');
+        this.NEW_TAB_BUTTON.onclick = () => this.addNewTab();
+        this.NEW_TAB_BUTTON.classList.add('btn-tab');
+        this.NEW_TAB_BUTTON.innerHTML = `<i class="fas fa-plus"></i>`;
+        UL_ELEMENT.appendChild(this.NEW_TAB_BUTTON);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
-  editAlTabHeaders(): void {
+  private editAlTabHeaders(): void {
     setTimeout(() => {
         try {
           const SPANS = document.getElementsByClassName('bs-remove-tab');
           const ARR = Array.prototype.slice.call(SPANS) as Array<HTMLSpanElement>;
           ARR.forEach(span => {
           span.innerHTML = `<button class="btn-tab"><i class="fas fa-times"></i></button>`;
+          this.addNewTabButton();
       });
         } catch (error) {
           console.log(error);
@@ -114,7 +117,7 @@ export class MainComponent implements OnInit, AfterContentInit {
       }, 20);
   }
 
-  addNewTab(): void {
+  public addNewTab(): void {
     if (this.tabs.length >= 10) {
       return;
     }
@@ -134,14 +137,14 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.editAlTabHeaders();
   }
 
-  removeTabHandler(tab: any): void {
+  public removeTabHandler(tab: any): void {
     this.tabs.splice(this.tabs.indexOf(tab), 1);
     if (this.tabs.length === 0) {
       this.addNewTab();
     }
   }
 
-  setStatic(): void {
+  public setStatic(): void {
     const SETTINGS = this.tabs.find((tab) => tab.active === true);
     // tslint:disable-next-line:max-line-length
     this.cmd.runCommand(`netsh interface ipv4 set address name="${SETTINGS.interface}" static ${SETTINGS.ipAddress} ${SETTINGS.subnet} ${SETTINGS.gateway}`);
@@ -158,7 +161,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.notificationService.setNotification(NotificationEnum.Info, 'Static IP settings applied.');
   }
 
-  setDHCP(): void {
+  public setDHCP(): void {
     const SETTINGS = this.tabs.find((tab) => tab.active === true);
     // tslint:disable-next-line:max-line-length
     this.cmd.runCommand(`netsh interface ipv4 set address name="${SETTINGS.interface}" dhcp`);
@@ -166,7 +169,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.notificationService.setNotification(NotificationEnum.Info, 'IP address set to automatic.');
   }
 
-  highlightFirstSectionOfIpAddress(event: FocusEvent): void {
+  public highlightFirstSectionOfIpAddress(event: FocusEvent): void {
     const TEXT_INPUT = event.srcElement as HTMLInputElement;
     TEXT_INPUT.selectionStart = 0;
     for (let i = 0; i < TEXT_INPUT.value.length; i++) {
