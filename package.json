@@ -26,7 +26,7 @@
     "@angular/router": "~8.2.11",
     "bootstrap": "^4.3.1",
     "electron-settings": "^3.2.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ngx-bootstrap": "^5.2.0",
     "ngx-electron": "^2.2.0",
     "node-powershell": "^4.0.0",
